@@ -1,0 +1,67 @@
+{% extends 'base/_base.html' %}
+
+<body>
+    {% block content %} 
+
+    <style>
+    .room-container {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        
+
+    }
+ 
+    </style>
+
+
+<div class="room-container">
+    <div>
+         <h1>{{ room.name }}</h1>
+         <p>{{ room.description }}</p>
+         <p>Topic: {{ room.topic.name }}</p>
+         <p>Host: {{ room.host.username }}</p>
+
+        <div class="comment-wrapper">
+             <h2>Comments</h2>
+             
+              {% for message in room_messages %}
+                <div class="comment">
+                    {% if request.user == message.user %}
+                    <a href="{% url 'delete-message' message.id %}">Delete</a>
+                    {% endif %}
+                    <p><strong>@{{ message.user.username }} </strong> <small>{{ message.created|timesince }} ago</small></p>
+                    <p>{{ message.body }}</p>
+                    <hr>
+                    
+                </div>
+             {% endfor %}
+
+             <div class="coment-form">
+                 {% if user.is_authenticated %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <textarea name="body" placeholder="Write your comment here..." required></textarea>
+                        <button type="submit">Post Comment</button>
+                    </form>
+                 {% else %}
+                    <p>Please <a href="{% url 'login' %}">login</a> to post a comment.</p>
+                {% endif %}
+            </div>
+    </div>
+    </div >
+
+    <div>
+        <h3>Participants</h3>
+        <ul>
+            {% for participant in participants %}
+                <li>@{{ participant.username }}</li>
+            {% empty %}
+                <li>No participants yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+    {% endblock %}
+</body>
