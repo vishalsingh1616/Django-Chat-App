@@ -1,0 +1,43 @@
+{% extends 'base/_base.html' %}
+
+{% block content %}
+<style>
+
+    .home-container {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0;
+    }
+
+
+    .topics a:hover {
+        color: #000;
+        font-weight: 500;
+    }
+    /* Right Side - Activities */
+</style>
+
+<div class="home-container">
+    <!-- Left: Browse Topics -->
+    <div class="topics">
+        {% include 'base/topics_component.html'%}
+        
+    </div>
+
+    <!-- Right: Rooms Section -->
+    <div class="rooms">
+        <h1>Home Template</h1>
+        <h5>{{rooms_count}} rooms available</h5>
+        <a href="{% url 'create-room' %}">Create Room</a>
+        <div>
+            {% include 'base/feed_component.html'%}
+        </div>
+    </div>
+
+    <div>
+      {% include 'base/activity_component.html'%}
+    </div>
+</div>
+{% endblock %}
